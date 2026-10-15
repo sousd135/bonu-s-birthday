@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Bonu 💗</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600;700&display=swap');
+
+*{box-sizing:border-box}
+body{
+ margin:0;font-family:Poppins,sans-serif;text-align:center;
+ color:#92365f;
+ background:linear-gradient(135deg,#fff0f6,#ffd9e8,#fff4e8);
+}
+.page{
+ display:none;min-height:100vh;padding:30px 20px;
+ align-items:center;justify-content:center;
+}
+.page.active{display:flex;animation:fade .7s}
+.card{
+ width:100%;max-width:600px;padding:35px 22px;
+ background:#ffffffd9;border-radius:28px;
+ box-shadow:0 15px 50px #b832681c;
+}
+h1{
+ font-family:'Great Vibes',cursive;
+ font-size:clamp(55px,12vw,85px);
+ color:#c42f72;margin:20px 0;
+}
+h2{color:#c42f72}
+p{line-height:1.9}
+button{
+ border:0;border-radius:30px;padding:14px 25px;
+ background:linear-gradient(120deg,#ff8bb9,#df4285);
+ color:white;font-size:16px;font-weight:bold;
+ cursor:pointer;margin-top:18px;
+}
+img{
+ width:100%;max-width:380px;max-height:55vh;
+ object-fit:contain;padding:8px;background:white;
+ border:3px solid #ffd0e2;border-radius:20px;
+}
+.heart{font-size:28px}
+@keyframes fade{
+ from{opacity:0;transform:translateY(15px)}
+ to{opacity:1;transform:translateY(0)}
+}
+</style>
+</head>
+<body>
+
+<audio id="song" src="birthday-song.mp3" loop></audio>
+
+<section class="page active" id="p1">
+ <div class="card">
+  <div class="heart">🎀 💗 ✨</div>
+  <h1>Hey, Bonu!</h1>
+  <p>A special surprise made with love, just for you.</p>
+  <button onclick="start()">Start the Surprise ♡</button>
+ </div>
+</section>
+
+<section class="page" id="p2">
+ <div class="card">
+  <div class="heart">🎂 🎉 💖</div>
+  <h1>Happy Birthday</h1>
+  <h1>Bonu!</h1>
+  <p>Today is your special day! 🌸</p>
+  <button onclick="next(3)">See Your Picture →</button>
+ </div>
+</section>
+
+<section class="page" id="p3">
+ <div class="card">
+  <h2>My Lovely Bonu 💗</h2>
+  <img src="bonu-photo.png" alt="Bonu">
+  <p>May your beautiful smile always shine!</p>
+  <button onclick="next(4)">Read My Wish 💌</button>
+ </div>
+</section>
+
+<section class="page" id="p4">
+ <div class="card">
+  <div class="heart">🌷 💗 🎂</div>
+  <h2>Wish you many many returns of the day!</h2>
+  <p>
+   May your life always be filled with happiness,
+   love, success, and beautiful memories.
+   May all your dreams come true, and may you
+   always keep smiling.
+  </p>
+  <p><strong>
+   Lots and lots of love and the warmest wishes
+   for you, from your brother.
+  </strong></p>
+  <h1>Love You, Bonu!</h1>
+  <button onclick="next(1)">Replay Surprise ↻</button>
+ </div>
+</section>
+
+<script>
+const song = document.getElementById("song");
+
+function next(n){
+ document.querySelectorAll(".page").forEach(p=>{
+  p.classList.remove("active");
+ });
+ document.getElementById("p"+n).classList.add("active");
+ window.scrollTo(0,0);
+}
+
+function start(){
+ song.play().catch(()=>{
+  alert("Tap the button again to play the music.");
+ });
+ next(2);
+}
+</script>
+
+</body>
+</html>
