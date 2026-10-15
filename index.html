@@ -1,160 +1,174 @@
-<!DOCTYPE html>
+import os, base64
+
+img_path = "/mnt/data/bonu_birthday_website/bonu-photo.png"
+audio_path = "/mnt/data/bonu_birthday_website/birthday-song.mp3"
+assert os.path.exists(img_path) and os.path.exists(audio_path)
+
+def data_uri(path, mime):
+    with open(path, "rb") as f:
+        return f"data:{mime};base64," + base64.b64encode(f.read()).decode("ascii")
+
+img_uri = data_uri(img_path, "image/png")
+audio_uri = data_uri(audio_path, "audio/mpeg")
+
+html = r'''<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffeaf3">
 <title>Happy Birthday Bonu 💗</title>
-
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap');
+:root{--pink:#f477a8;--deep:#a92e67;--ink:#71334f;--cream:#fff9fc}
 *{box-sizing:border-box}
-body{
- margin:0;
- font-family:Poppins,sans-serif;
- color:#8e315c;
- background:linear-gradient(135deg,#fff0f6,#ffd6e7,#fff4e9);
-}
-.page{
- display:none;
- min-height:100vh;
- padding:24px 16px;
- align-items:center;
- justify-content:center;
- text-align:center;
-}
-.page.active{display:flex;animation:fade .6s ease}
-.card{
- width:100%;max-width:600px;
- padding:30px 20px;
- border:1px solid white;
- border-radius:28px;
- background:#ffffffdf;
- box-shadow:0 15px 45px #bd4a7b25;
-}
-h1{
- font-family:'Great Vibes',cursive;
- font-size:clamp(55px,12vw,85px);
- color:#c02d70;
- margin:15px 0;
-}
-h2{color:#c02d70}
-p{line-height:1.9}
-button{
- border:0;border-radius:30px;
- padding:14px 23px;margin:10px 5px;
- background:linear-gradient(120deg,#ff8bb9,#df4285);
- color:white;font-size:15px;font-weight:bold;
- cursor:pointer;
-}
-img{
- display:block;
- width:100%;max-width:380px;
- max-height:55vh;object-fit:contain;
- margin:20px auto;
- padding:7px;background:white;
- border:2px solid #ffc5dc;border-radius:20px;
-}
-#musicStatus{font-size:13px;color:#a04b73}
-@keyframes fade{
- from{opacity:0;transform:translateY(12px)}
- to{opacity:1;transform:translateY(0)}
-}
+html,body{margin:0;min-height:100%;font-family:Poppins,Arial,sans-serif}
+body{background:radial-gradient(ellipse at top,#fff 0%,#fff0f6 42%,#fbd9e8 100%);color:var(--ink);overflow-x:hidden}
+.page{display:none;min-height:100svh;padding:24px 16px;align-items:center;justify-content:center;text-align:center;position:relative;isolation:isolate}
+.page.active{display:flex;animation:pageIn .7s cubic-bezier(.2,.8,.2,1) both}
+.page:before,.page:after{content:"✦";position:absolute;color:#f1a6c5;opacity:.5;font-size:28px;z-index:-1}
+.page:before{top:9%;left:8%}.page:after{bottom:10%;right:9%;font-size:34px}
+.card{width:min(100%,620px);padding:clamp(25px,6vw,48px) clamp(20px,5vw,42px);border:1px solid #ffffffd9;border-radius:30px;background:#ffffffb8;box-shadow:0 22px 70px #9e37651b, inset 0 1px #fff;backdrop-filter:blur(12px);position:relative}
+.moon{font-size:32px;letter-spacing:8px;margin-bottom:10px}
+.eyebrow{font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:#c36b91;font-weight:600}
+.script{font-family:'Great Vibes',cursive;color:var(--deep);font-weight:400;font-size:clamp(4rem,13vw,7rem);line-height:1.02;margin:17px 0 12px}
+h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(1.55rem,5vw,2.2rem);color:var(--deep);line-height:1.25;margin:14px 0}
+p{font-size:clamp(.94rem,2.5vw,1.08rem);line-height:1.95;margin:13px 0;color:#85516b}
+.btn{border:0;border-radius:999px;padding:14px 25px;margin-top:20px;background:linear-gradient(135deg,#fb9abd,#df4f8b);color:white;font:600 .95rem Poppins,sans-serif;box-shadow:0 10px 28px #d8498840;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 32px #d8498855}
+.btn.secondary{background:#fff;color:#b33d75;border:1px solid #f5bfd4;box-shadow:none}
+.photo-frame{width:min(100%,390px);margin:22px auto 14px;padding:9px;border-radius:25px;background:linear-gradient(140deg,#fff,#ffc8dd,#fff1c9);box-shadow:0 16px 42px #a83e6a25;transform:rotate(-1deg)}
+.photo-frame img{display:block;width:100%;max-height:54vh;object-fit:contain;border-radius:18px;background:#fff}
+.rule{width:80px;height:2px;margin:20px auto;background:linear-gradient(90deg,transparent,#e98db4,transparent)}
+.big-heart{font-size:30px;letter-spacing:7px;margin:18px 0}
+.signature{font-family:'Great Vibes',cursive;font-size:clamp(2.6rem,8vw,4rem);color:#b53672;margin:12px 0}
+.progress{display:flex;justify-content:center;gap:7px;margin:26px 0 0}
+.progress span{height:6px;width:22px;border-radius:99px;background:#f5c6d9;transition:.3s}
+.progress span.on{width:35px;background:#d94f8b}
+.music{position:fixed;right:12px;bottom:12px;z-index:5;background:#fffafc;border:1px solid #f3c0d6;color:#a92e67;border-radius:999px;padding:10px 14px;font:500 .78rem Poppins,sans-serif;box-shadow:0 5px 20px #9e37651b;cursor:pointer}
+.float{position:fixed;bottom:-40px;z-index:4;pointer-events:none;animation:rise linear forwards}
+@keyframes pageIn{from{opacity:0;transform:translateY(15px) scale(.99)}to{opacity:1;transform:none}}
+@keyframes rise{to{transform:translateY(-115vh) rotate(30deg);opacity:0}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 </head>
-
 <body>
+<audio id="song" src="__AUDIO__" preload="auto" loop></audio>
 
-<audio id="song" src="./birthday-song.mp3" loop preload="auto"></audio>
-
-<section class="page active" id="p1">
+<section class="page active" id="page1">
  <div class="card">
-  <p>🎀 ✨ 💗</p>
-  <h1>Hey, Bonu!</h1>
-  <p>A little birthday surprise made with love, just for you.</p>
-  <button onclick="startSurprise()">Start the Surprise ♡</button>
-  <p id="musicStatus">🎵 Your birthday song is ready</p>
+  <div class="moon">🌙 💗 ✨</div>
+  <div class="eyebrow">A little surprise for someone special</div>
+  <h1 class="script">Hey, Bonu!</h1>
+  <p>Tap here and let the magic begin…<br>A little page made with so much love, just for you.</p>
+  <button class="btn" onclick="begin()">Open My Heart ❤️</button>
+  <div class="progress"><span class="on"></span><span></span><span></span><span></span><span></span></div>
  </div>
 </section>
 
-<section class="page" id="p2">
+<section class="page" id="page2">
  <div class="card">
-  <p>🎂 🎉 💖</p>
-  <h1>Happy Birthday</h1>
-  <h1>Bonu!</h1>
-  <p>May your special day be full of love and happiness. 🌸</p>
-  <button onclick="showPage(3)">See Your Picture →</button>
+  <div class="moon">💗</div>
+  <div class="eyebrow">A little message from your brother</div>
+  <h1 class="script">I Love You</h1>
+  <h2>Bonu ❤️</h2>
+  <div class="rule"></div>
+  <p>You are one of the most precious parts of our family. May your heart always be full of joy, and may life give you a thousand reasons to smile.</p>
+  <button class="btn" onclick="go(3)">A Memory For You →</button>
+  <div class="progress"><span></span><span class="on"></span><span></span><span></span><span></span></div>
  </div>
 </section>
 
-<section class="page" id="p3">
+<section class="page" id="page3">
  <div class="card">
-  <h2>My Lovely Bonu 💗</h2>
-  <img src="./bonu-photo.png"
-       alt="Bonu's Birthday Picture"
-       onerror="this.alt='Picture not found. Upload bonu-photo.png to the same repository.';this.style.minHeight='100px';">
-  <p>You deserve all the happiness in the world!</p>
-  <button onclick="showPage(4)">Read My Wish 💌</button>
+  <div class="eyebrow">A beautiful little memory</div>
+  <h2>My Lovely Bonu 🌸</h2>
+  <div class="photo-frame"><img src="__IMAGE__" alt="A special picture for Bonu"></div>
+  <p>Keep smiling, keep shining, and never forget how loved you are. ✨</p>
+  <button class="btn" onclick="go(4)">Your Birthday Wish →</button>
+  <div class="progress"><span></span><span></span><span class="on"></span><span></span><span></span></div>
  </div>
 </section>
 
-<section class="page" id="p4">
+<section class="page" id="page4">
  <div class="card">
-  <p>🌷 💗 🎂</p>
-  <h2>Wish you many many returns of the day!</h2>
-  <p>
-   May your life always be filled with happiness,
-   love, success, and beautiful memories.
-   May all your dreams come true, and may you
-   always keep smiling.
-  </p>
-  <p><strong>
-   Lots and lots of love and the warmest wishes
-   for you, from your brother.
-  </strong></p>
-  <h1>Love You, Bonu!</h1>
-  <button onclick="showPage(1)">Replay Surprise ↻</button>
-  <button onclick="toggleMusic()">▶ / ⏸ Music</button>
+  <div class="moon">🎂 ✨ 🎀</div>
+  <div class="eyebrow">Today is all about you</div>
+  <h1 class="script">Happy Birthday</h1>
+  <h2>Bonu! 💖</h2>
+  <div class="rule"></div>
+  <p>Wish you many many returns of the day!</p>
+  <p>May every dream you hold close to your heart come true. May your days be filled with happiness, your path with success, and your life with beautiful moments and people who love you.</p>
+  <button class="btn" onclick="go(5)">One Last Message 💌</button>
+  <div class="progress"><span></span><span></span><span></span><span class="on"></span><span></span></div>
  </div>
 </section>
+
+<section class="page" id="page5">
+ <div class="card">
+  <div class="big-heart">💗 🌷 💗</div>
+  <div class="eyebrow">From your brother, with all my love</div>
+  <h2>Lots of Love & Best Wishes</h2>
+  <p>May Allah bless you with happiness, good health, success, and endless reasons to smile. No matter how much you grow, you will always be my precious Bonu.</p>
+  <p><strong>Lots and lots of love and the warmest wishes for you, from your brother.</strong></p>
+  <div class="signature">Love you always, Bonu!</div>
+  <button class="btn" onclick="go(1)">Replay Our Little Story ↻</button>
+  <div class="progress"><span></span><span></span><span></span><span></span><span class="on"></span></div>
+ </div>
+</section>
+
+<button class="music" id="musicBtn" onclick="toggleMusic()">♫ Play Music</button>
 
 <script>
-const song = document.getElementById("song");
-const statusText = document.getElementById("musicStatus");
+const song=document.getElementById('song');
+const musicBtn=document.getElementById('musicBtn');
+let heartsStarted=false;
 
-function showPage(n){
- document.querySelectorAll(".page").forEach(page=>{
-  page.classList.remove("active");
- });
- document.getElementById("p"+n).classList.add("active");
- window.scrollTo(0,0);
+function go(n){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById('page'+n).classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+ burst();
 }
-
-async function startSurprise(){
- // Start audio directly in response to the button click.
+async function begin(){
+ // Play is called directly from the user's button click for browser permission.
  try{
   await song.play();
-  statusText.textContent="🎵 Playing your birthday song 💗";
- }catch(error){
-  statusText.textContent="Music couldn't start. Check the MP3 file, then tap Music.";
+  musicBtn.textContent='♫ Pause Music';
+ }catch(e){
+  musicBtn.textContent='♫ Tap to Play Music';
  }
- showPage(2);
+ go(2);
+ if(!heartsStarted){heartsStarted=true;setInterval(burst,1800);}
 }
-
 async function toggleMusic(){
  if(song.paused){
-  try{
-   await song.play();
-   if(statusText) statusText.textContent="🎵 Music is playing 💗";
-  }catch(error){
-   alert("Check that birthday-song.mp3 is uploaded correctly.");
-  }
+  try{await song.play();musicBtn.textContent='♫ Pause Music';}
+  catch(e){alert('Music could not play. Please make sure your browser allows audio playback.');}
  }else{
-  song.pause();
-  if(statusText) statusText.textContent="Music paused";
+  song.pause();musicBtn.textContent='♫ Play Music';
+ }
+}
+function burst(){
+ const symbols=['💗','✨','🌸','♡','💕'];
+ for(let i=0;i<5;i++){
+  const el=document.createElement('span');
+  el.className='float';
+  el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+  el.style.left=Math.random()*100+'vw';
+  el.style.fontSize=(15+Math.random()*15)+'px';
+  el.style.animationDuration=(5+Math.random()*4)+'s';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),9500);
  }
 }
 </script>
-
 </body>
-</html>
+</html>'''
+html = html.replace("__AUDIO__", audio_uri).replace("__IMAGE__", img_uri)
+
+out = "/mnt/data/index.html"
+with open(out, "w", encoding="utf-8") as f:
+    f.write(html)
+
+print(f"Created complete single-file index.html ({os.path.getsize(out)/(1024*1024):.2f} MB). It embeds the image and song, with five sequential pages and a music control.")
