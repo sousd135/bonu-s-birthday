@@ -2,87 +2,105 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Happy Birthday Bonu 💗</title>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600;700&display=swap');
 
 *{box-sizing:border-box}
 body{
- margin:0;font-family:Poppins,sans-serif;text-align:center;
- color:#92365f;
- background:linear-gradient(135deg,#fff0f6,#ffd9e8,#fff4e8);
+ margin:0;
+ font-family:Poppins,sans-serif;
+ color:#8e315c;
+ background:linear-gradient(135deg,#fff0f6,#ffd6e7,#fff4e9);
 }
 .page{
- display:none;min-height:100vh;padding:30px 20px;
- align-items:center;justify-content:center;
+ display:none;
+ min-height:100vh;
+ padding:24px 16px;
+ align-items:center;
+ justify-content:center;
+ text-align:center;
 }
-.page.active{display:flex;animation:fade .7s}
+.page.active{display:flex;animation:fade .6s ease}
 .card{
- width:100%;max-width:600px;padding:35px 22px;
- background:#ffffffd9;border-radius:28px;
- box-shadow:0 15px 50px #b832681c;
+ width:100%;max-width:600px;
+ padding:30px 20px;
+ border:1px solid white;
+ border-radius:28px;
+ background:#ffffffdf;
+ box-shadow:0 15px 45px #bd4a7b25;
 }
 h1{
  font-family:'Great Vibes',cursive;
  font-size:clamp(55px,12vw,85px);
- color:#c42f72;margin:20px 0;
+ color:#c02d70;
+ margin:15px 0;
 }
-h2{color:#c42f72}
+h2{color:#c02d70}
 p{line-height:1.9}
 button{
- border:0;border-radius:30px;padding:14px 25px;
+ border:0;border-radius:30px;
+ padding:14px 23px;margin:10px 5px;
  background:linear-gradient(120deg,#ff8bb9,#df4285);
- color:white;font-size:16px;font-weight:bold;
- cursor:pointer;margin-top:18px;
+ color:white;font-size:15px;font-weight:bold;
+ cursor:pointer;
 }
 img{
- width:100%;max-width:380px;max-height:55vh;
- object-fit:contain;padding:8px;background:white;
- border:3px solid #ffd0e2;border-radius:20px;
+ display:block;
+ width:100%;max-width:380px;
+ max-height:55vh;object-fit:contain;
+ margin:20px auto;
+ padding:7px;background:white;
+ border:2px solid #ffc5dc;border-radius:20px;
 }
-.heart{font-size:28px}
+#musicStatus{font-size:13px;color:#a04b73}
 @keyframes fade{
- from{opacity:0;transform:translateY(15px)}
+ from{opacity:0;transform:translateY(12px)}
  to{opacity:1;transform:translateY(0)}
 }
 </style>
 </head>
+
 <body>
 
-<audio id="song" src="birthday-song.mp3" loop></audio>
+<audio id="song" src="./birthday-song.mp3" loop preload="auto"></audio>
 
 <section class="page active" id="p1">
  <div class="card">
-  <div class="heart">🎀 💗 ✨</div>
+  <p>🎀 ✨ 💗</p>
   <h1>Hey, Bonu!</h1>
-  <p>A special surprise made with love, just for you.</p>
-  <button onclick="start()">Start the Surprise ♡</button>
+  <p>A little birthday surprise made with love, just for you.</p>
+  <button onclick="startSurprise()">Start the Surprise ♡</button>
+  <p id="musicStatus">🎵 Your birthday song is ready</p>
  </div>
 </section>
 
 <section class="page" id="p2">
  <div class="card">
-  <div class="heart">🎂 🎉 💖</div>
+  <p>🎂 🎉 💖</p>
   <h1>Happy Birthday</h1>
   <h1>Bonu!</h1>
-  <p>Today is your special day! 🌸</p>
-  <button onclick="next(3)">See Your Picture →</button>
+  <p>May your special day be full of love and happiness. 🌸</p>
+  <button onclick="showPage(3)">See Your Picture →</button>
  </div>
 </section>
 
 <section class="page" id="p3">
  <div class="card">
   <h2>My Lovely Bonu 💗</h2>
-  <img src="bonu-photo.png" alt="Bonu">
-  <p>May your beautiful smile always shine!</p>
-  <button onclick="next(4)">Read My Wish 💌</button>
+  <img src="./bonu-photo.png"
+       alt="Bonu's Birthday Picture"
+       onerror="this.alt='Picture not found. Upload bonu-photo.png to the same repository.';this.style.minHeight='100px';">
+  <p>You deserve all the happiness in the world!</p>
+  <button onclick="showPage(4)">Read My Wish 💌</button>
  </div>
 </section>
 
 <section class="page" id="p4">
  <div class="card">
-  <div class="heart">🌷 💗 🎂</div>
+  <p>🌷 💗 🎂</p>
   <h2>Wish you many many returns of the day!</h2>
   <p>
    May your life always be filled with happiness,
@@ -95,26 +113,46 @@ img{
    for you, from your brother.
   </strong></p>
   <h1>Love You, Bonu!</h1>
-  <button onclick="next(1)">Replay Surprise ↻</button>
+  <button onclick="showPage(1)">Replay Surprise ↻</button>
+  <button onclick="toggleMusic()">▶ / ⏸ Music</button>
  </div>
 </section>
 
 <script>
 const song = document.getElementById("song");
+const statusText = document.getElementById("musicStatus");
 
-function next(n){
- document.querySelectorAll(".page").forEach(p=>{
-  p.classList.remove("active");
+function showPage(n){
+ document.querySelectorAll(".page").forEach(page=>{
+  page.classList.remove("active");
  });
  document.getElementById("p"+n).classList.add("active");
  window.scrollTo(0,0);
 }
 
-function start(){
- song.play().catch(()=>{
-  alert("Tap the button again to play the music.");
- });
- next(2);
+async function startSurprise(){
+ // Start audio directly in response to the button click.
+ try{
+  await song.play();
+  statusText.textContent="🎵 Playing your birthday song 💗";
+ }catch(error){
+  statusText.textContent="Music couldn't start. Check the MP3 file, then tap Music.";
+ }
+ showPage(2);
+}
+
+async function toggleMusic(){
+ if(song.paused){
+  try{
+   await song.play();
+   if(statusText) statusText.textContent="🎵 Music is playing 💗";
+  }catch(error){
+   alert("Check that birthday-song.mp3 is uploaded correctly.");
+  }
+ }else{
+  song.pause();
+  if(statusText) statusText.textContent="Music paused";
+ }
 }
 </script>
 
